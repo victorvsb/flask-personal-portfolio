@@ -8,7 +8,7 @@ insert new ones, update and delete those already registered.
 This project is suposed to have a very simple interface, since it aims to praise the use of Flask framework, implementing its resources.
 
 ## Flask resources applied at the project
-- Routing URL to functions, without parameters, as well as typed ones;
+- Routing URL to functions, without parameters, as well as with typed ones;
 - Redirection through dynamic built URL;
 - Use of different methods (POST, GET);
 - Templates with Jinja2;
