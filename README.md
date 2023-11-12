@@ -24,7 +24,7 @@ git clone https://github.com/victorvsb/flask-personal-portfolio.git
 cd flask-personal-portfolio
 
 # Create the virtual environment
-python -m venv ven
+python -m venv venv
 
 # Execute the virtual environment
 venv\script\activate
@@ -32,7 +32,7 @@ venv\script\activate
 # Install the dependencies
 pip install -r requirements
 
-# Create de SQLite database
+# Create the SQLite database
 python database\initial.py
 
 # Execute the project
