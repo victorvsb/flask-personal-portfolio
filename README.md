@@ -33,7 +33,7 @@ venv\script\activate
 pip install -r requirements
 
 # Create the SQLite database
-python database\initial.py
+python data_base\initial.py
 
 # Execute the project
 python app.py
