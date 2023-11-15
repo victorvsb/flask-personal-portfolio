@@ -10,9 +10,10 @@
     <h1> Products list </h1>
 
     <ul>
+
         {% for product in products %}
 
-            <li> <a href="products_details/{{product.id}}"> {{ product.name }} </a> </li>
+            <li> <a href="{{ url_for('products_detail', product_id=product.id) }}"> {{ product.name }} </a> </li>
 
         {% else %}
             <li>There is no product registered yet.</li>
@@ -20,7 +21,7 @@
 
     </ul>
 
-    <a href="products_add"> Create </a>
+    <a href="{{ url_for('products_add') }}"> Create </a>
     
 </body>
 </html>

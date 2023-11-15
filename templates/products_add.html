@@ -7,28 +7,28 @@
 </head>
 <body>
 
-    <h1> Create product </h1>
+    <h1> {% if product %} Edit {% else %} Create {% endif %} product </h1>
 
     <form method="POST">
 
         <p>
             <label for="product_id"> Id: </label>
-            <input type="text" id="product_id" name="product_id">
+            <input type="text" id="product_id" name="product_id" value="{% if product is defined %} {{ product.id }} {% endif %}">
         </p>
 
         <p>
             <label for="product_name"> Name: </label>
-            <input type="text" id="product_name" name="product_name">
+            <input type="text" id="product_name" name="product_name" value="{% if product is defined %} {{ product.name }} {% endif %}">
         </p>
 
         <p>
             <label for="product_brand"> Brand: </label>
-            <input type="text" id="product_brand" name="product_brand">
+            <input type="text" id="product_brand" name="product_brand" value="{% if product is defined %} {{ product.brand }} {% endif %}">
         </p>
 
         <p>
             <label for="product_price"> Price: </label>
-            <input type="text" id="product_price" name="product_price">
+            <input type="text" id="product_price" name="product_price" value="{% if product is defined %} {{ product.price }} {% endif %}">
         </p>
 
         <input type="submit" value="Save"> <input type="reset" value="Reset">

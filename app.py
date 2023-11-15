@@ -46,7 +46,7 @@ def products_list():
 
     return render_template('products_list.html', products=products)
 
-@app.route("/products_add", methods=['POST', 'GET'])
+@app.route("/products/add", methods=['POST', 'GET'])
 def products_add():
     """
         Route to product insert.
@@ -72,7 +72,7 @@ def products_add():
 
     return render_template('products_add.html')
 
-@app.route("/products_details/<int:product_id>")
+@app.route("/products/<int:product_id>")
 def products_detail(product_id):
     """
         Route to product details.
@@ -89,6 +89,66 @@ def products_detail(product_id):
     conn.close()
 
     return render_template('products_details.html', product=product)
+
+@app.route("/products/edit/<int:product_id>", methods=['GET', 'POST'])
+def products_edit(product_id):
+    """
+        Route to product edit.
+    """
+
+    if request.method == "GET":
+
+        select_product_query = f"SELECT * FROM products WHERE id={product_id};"
+        conn = sql.connect("database.db")
+        conn.row_factory = sql.Row
+        cursor = conn.cursor()
+        cursor.execute(select_product_query)
+
+        product = cursor.fetchone()
+
+        return render_template("products_add.html", product=product)
+
+    product_id = request.form['product_id']
+    product_name = request.form['product_name']
+    product_brand = request.form['product_brand']
+    product_price = request.form['product_price']
+    update_product_query = f"""
+        UPDATE products 
+        SET 
+            name='{product_name}', 
+            brand='{product_brand}', 
+            price={product_price}
+        WHERE 
+            id={product_id}
+        ;
+    """
+    conn = sql.connect("database.db")
+    cur = conn.cursor()
+    cur.execute(update_product_query)
+    conn.commit()
+    conn.close()
+    return redirect(url_for('products_detail', product_id=product_id))
+
+
+@app.route("/products/delete/<int:product_id>", methods=['GET', 'POST'])
+def products_delete(product_id):
+    """
+        Route to product delete.
+    """
+
+    if request.method == "GET":
+        update_product_query = f"""
+            DELETE FROM products 
+            WHERE id={product_id};
+        """
+        conn = sql.connect("database.db")
+        cur = conn.cursor()
+        cur.execute(update_product_query)
+        conn.commit()
+        conn.close()
+
+    return redirect(url_for('products_list'))
+
 
 if __name__ == "__main__":
     app.run(debug=True)
