@@ -13,6 +13,20 @@ class ProductDAO:
     def __init__(self, **kwargs):
         if 'product' in kwargs:
             self.product = kwargs['product']
+        else:
+            self.product = Product()
+
+        if 'id' in kwargs:
+            self.product.id = kwargs['id']
+
+        if 'name' in kwargs:
+            self.product.name = kwargs['name']
+
+        if 'brand' in kwargs:
+            self.product.brand = kwargs['brand']
+
+        if 'price' in kwargs:
+            self.product.price = kwargs['price']
         self.__connection= None
 
     @property

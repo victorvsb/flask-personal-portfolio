@@ -16,7 +16,6 @@ from flask import (
 )
 
 from dao.product_dao import ProductDAO
-from models.product import Product
 
 app = Flask(__name__)
 
@@ -45,14 +44,12 @@ def products_add():
 
     if request.method == 'POST':
 
-        product = Product(
+        product_dao = ProductDAO(
             id=int(request.form['product_id']),
             name=request.form['product_name'],
             brand=request.form['product_brand'],
             price=float(request.form['product_price'])
         )
-
-        product_dao = ProductDAO(product=product)
         product_dao.insert()
 
         return redirect(url_for('products_list'))
@@ -65,9 +62,7 @@ def products_detail(product_id):
         Route to product details.
     """
 
-    product = Product(id=product_id)
-
-    product_dao = ProductDAO(product=product)
+    product_dao = ProductDAO(id=product_id)
     product = product_dao.select()
 
     return render_template('products_details.html', product=product)
@@ -80,21 +75,17 @@ def products_edit(product_id):
 
     if request.method == "GET":
 
-        product = Product(id=product_id)
-
-        product_dao = ProductDAO(product=product)
+        product_dao = ProductDAO(id=product_id)
         product = product_dao.select()
 
         return render_template("products_add.html", product=product)
 
-    product = Product(
+    product_dao = ProductDAO(
         id=int(request.form['product_id']),
         name=request.form['product_name'],
         brand=request.form['product_brand'],
         price=float(request.form['product_price'])
     )
-
-    product_dao = ProductDAO(product=product)
     product_dao.update()
 
     return redirect(url_for('products_detail', product_id=product_id))
@@ -108,9 +99,7 @@ def products_delete(product_id):
 
     if request.method == "GET":
 
-        product = Product(id=product_id)
-
-        product_dao = ProductDAO(product=product)
+        product_dao = ProductDAO(id=product_id)
         product_dao.delete()
 
     return redirect(url_for('products_list'))
