@@ -6,7 +6,6 @@
     linkedin: https://www.linkedin.com/in/victorvsb/
     github: https://github.com/victorvsb
 """
-import sqlite3 as sql
 
 from flask import (
     Flask,
@@ -15,6 +14,9 @@ from flask import (
     request,
     url_for
 )
+
+from dao.product_dao import ProductDAO
+from models.product import Product
 
 app = Flask(__name__)
 
@@ -31,18 +33,7 @@ def products_list():
     """
         Route to products list.
     """
-
-    conn = sql.connect('database.db')
-    conn.row_factory = sql.Row
-    cursor = conn.cursor()
-
-    query = "SELECT * FROM products ORDER BY name;"
-
-    cursor.execute(query)
-
-    products = cursor.fetchall()
-
-    conn.close()
+    products = ProductDAO().select_all()
 
     return render_template('products_list.html', products=products)
 
@@ -54,19 +45,15 @@ def products_add():
 
     if request.method == 'POST':
 
-        product_id = int(request.form['product_id'])
-        product_name = request.form['product_name']
-        product_brand = request.form['product_brand']
-        product_price = float(request.form['product_price'])
+        product = Product()
+        product.id = int(request.form['product_id'])
+        product.name = request.form['product_name']
+        product.brand = request.form['product_brand']
+        product.price = float(request.form['product_price'])
 
-        insert_product_query = f"INSERT INTO products (id, name, brand, price ) "\
-            f"VALUES ({product_id}, '{product_name}', "\
-            f"'{product_brand}', {product_price} );"
-        conn = sql.connect("database.db")
-        cursor = conn.cursor()
-        cursor.execute(insert_product_query)
-        conn.commit()
-        conn.close()
+        product_dao = ProductDAO()
+        product_dao.product = product
+        product_dao.insert()
 
         return redirect(url_for('products_list'))
 
@@ -78,15 +65,12 @@ def products_detail(product_id):
         Route to product details.
     """
 
-    select_product_query = f" SELECT * FROM products WHERE id={product_id};"
-    conn = sql.connect("database.db")
-    conn.row_factory = sql.Row
-    cursor = conn.cursor()
-    cursor.execute(select_product_query)
+    product = Product()
+    product.id = product_id
 
-    product = cursor.fetchone()
-
-    conn.close()
+    product_dao = ProductDAO()
+    product_dao.product = product
+    product = product_dao.select()
 
     return render_template('products_details.html', product=product)
 
@@ -98,35 +82,25 @@ def products_edit(product_id):
 
     if request.method == "GET":
 
-        select_product_query = f"SELECT * FROM products WHERE id={product_id};"
-        conn = sql.connect("database.db")
-        conn.row_factory = sql.Row
-        cursor = conn.cursor()
-        cursor.execute(select_product_query)
+        product = Product()
+        product.id = product_id
 
-        product = cursor.fetchone()
+        product_dao = ProductDAO()
+        product_dao.product = product
+        product = product_dao.select()
 
         return render_template("products_add.html", product=product)
 
-    product_id = request.form['product_id']
-    product_name = request.form['product_name']
-    product_brand = request.form['product_brand']
-    product_price = request.form['product_price']
-    update_product_query = f"""
-        UPDATE products 
-        SET 
-            name='{product_name}', 
-            brand='{product_brand}', 
-            price={product_price}
-        WHERE 
-            id={product_id}
-        ;
-    """
-    conn = sql.connect("database.db")
-    cur = conn.cursor()
-    cur.execute(update_product_query)
-    conn.commit()
-    conn.close()
+    product = Product()
+    product.id = int(request.form['product_id'])
+    product.name = request.form['product_name']
+    product.brand = request.form['product_brand']
+    product.price = float(request.form['product_price'])
+
+    product_dao = ProductDAO()
+    product_dao.product = product
+    product_dao.update()
+
     return redirect(url_for('products_detail', product_id=product_id))
 
 
@@ -137,15 +111,13 @@ def products_delete(product_id):
     """
 
     if request.method == "GET":
-        update_product_query = f"""
-            DELETE FROM products 
-            WHERE id={product_id};
-        """
-        conn = sql.connect("database.db")
-        cur = conn.cursor()
-        cur.execute(update_product_query)
-        conn.commit()
-        conn.close()
+
+        product = Product()
+        product.id = product_id
+
+        product_dao = ProductDAO()
+        product_dao.product = product
+        product_dao.delete()
 
     return redirect(url_for('products_list'))
 

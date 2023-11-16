@@ -10,8 +10,7 @@ from models.product import Product
 class ProductDAO:
     """ ProductDAO"""
 
-    def __init__(self, product):
-        self.product = product
+    def __init__(self):
         self.__connection= None
 
     @property

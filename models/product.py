@@ -12,7 +12,7 @@ class Product:
 
     def __init__(self):
         """
-            Class constructor that inittialize
+            Class constructor that initialize
             the properties with valid values.
         """
         self.id = 0
