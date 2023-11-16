@@ -10,7 +10,9 @@ from models.product import Product
 class ProductDAO:
     """ ProductDAO"""
 
-    def __init__(self):
+    def __init__(self, **kwargs):
+        if 'product' in kwargs:
+            self.product = kwargs['product']
         self.__connection= None
 
     @property

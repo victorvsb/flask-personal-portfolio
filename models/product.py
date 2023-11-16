@@ -10,15 +10,22 @@ class Product:
         from the class with its getter and setter methods.
     """
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         """
             Class constructor that initialize
             the properties with valid values.
         """
-        self.id = 0
-        self.name = ''
-        self.brand = ''
-        self.price = 0.0
+        if 'id' in kwargs:
+            self.id = kwargs['id']
+
+        if 'name' in kwargs:
+            self.name = kwargs['name']
+
+        if 'brand' in kwargs:
+            self.brand = kwargs['brand']
+
+        if 'price' in kwargs:
+            self.price = kwargs['price']
 
     @property
     def id(self):
