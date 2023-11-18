@@ -52,5 +52,5 @@ class DAO:
         self.connection.commit()
 
     # Different aliases for data_change()
-    # to make code more readable.
+    # to make the code more readable.
     insert = update = delete = data_change
