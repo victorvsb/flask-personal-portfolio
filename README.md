@@ -14,6 +14,7 @@ This project is suposed to have a very simple interface, since it aims to praise
 - Templates with Jinja2;
 - Receiving data throug HTML forms;
 - Integration of application with SQLite Database (CRUD);
+    - For each table in DataBase, it is suposed to exist one Model class and one DAO class, that together can handle its data, executing all CRUD operation expected in a DataBase System.
 
 ## How to excecute
 ```
@@ -38,3 +39,4 @@ python data_base\initial.py
 # Execute the project
 python app.py
 ```
+After installing and executing, as described above, the application will be avaible locally, and can be accessed using a Web Browser through the link http://127.0.0.1:5000
